@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>雲記号問題</title>
+</head>
+<body>
+
+<!-- 問題作成と答え表示 -->
+<div style="text-align:center">
+    <a href="https://harenote.com/glossary/clouds-icons/" target="_blank">参考サイト</a>
+    <h1>問題自動作成</h1>
+    <form id="form1" action="#">
+        <input type="button" onclick="click_button()" value="問題作成・答え表示">
+    </form>    
+</div>
+
+<div style="text-align:center">
+<script>
+'use strict';
+
+//変数の宣言
+let this_element = document.currentScript; //この<script>要素
+let img_width = 80; //画像のサイズ
+let state_QA = 'A' //問題(Q) or 答え(A) の表示用フラグ
+let img_name; // 画像名を格納する変数
+let explain; //説明文を格納する変数
+let explain_list = [
+    ['kagi-kenun.jpg', 'Ci巻雲　毛状 or カギ状空には広がらない'],
+    ['noumitu-kenun.jpg', 'Ci巻雲　濃密 or 塔状 or 房状空には広がらない'],
+    ['seki-kenun.jpg', 'Ci巻雲　濃密積乱雲からできた'],
+    ['kagi-mou.jpg', 'Ci巻雲　カギ状 or 毛状（または両方）次第に空に広がり、厚くなる'],
+    ['ken-sou.jpg', 'CiCs巻雲＆巻層雲（または巻層雲のみ）　次第に空に広がる地平線状45度以上には広がらない'],
+    ['ken-sou45.jpg', 'CiCs巻雲＆巻層雲（または巻層雲のみ）　次第に空に広がる地平線状45度以上・全天は覆わない'],
+    ['kensou-zen.jpg', 'Cs巻層雲　全天を覆う'],
+    ['kensou-han.jpg', 'Cs巻層雲　全天は覆わないこれ以上広がらない'],
+    ['kenseki.jpg', 'Cc巻積雲 or 巻積雲が卓越している'],
+    ['kousouun-hantoumei.jpg', 'As高層雲　半透明太陽や月は微かに見える'],
+    ['kousou-ransou.jpg', 'AsNs高層雲 or 乱層雲　不透明太陽や月は見えない'],
+    ['kouseki.jpg', 'Ac高積雲　半透明全天を覆う傾向なし'],
+    ['renzu.jpg', 'Ac高積雲　半透明レンズ状のことが多い全天を覆う傾向はない'],
+    ['renzokukouseki.jpg', 'Ac高積雲（帯状 or 連続的）　半透明次第に広がり厚くなる'],
+    ['seki-sekiran.jpg', 'Ac高積雲　積雲 or 積乱雲が広がってできた'],
+    ['kouseki-ransou.jpg', 'AcAsNs高積雲　不透明 or 半透明で2層以上全天に広がる傾向なし高層雲か乱層雲を伴うこともある'],
+    ['toujou.jpg', 'Ac高積雲　塔状 or 房状'],
+    ['konton.jpg', 'Ac高積雲　混沌としているいくつも層がある'],
+    ['henpei-sekiun.jpg', 'Cu積雲　扁平 or 断片的悪天候ではない'],
+    ['tyu-sekiun.jpg', 'Cu積雲 or 雄大積雲　中程度に発達している'],
+    ['mumou-sekiranun.jpg', 'Cb積乱雲　頂部に巻雲やカナトコ雲なし積雲や層積雲があってもよし'],
+    ['seki-sousekiun.jpg', 'Sc層積雲　積雲が広がってできた積雲があっても良い'],
+    ['sousekiun.jpg', 'Sc層積雲　積雲が広がってできた雲ではない'],
+    ['kirisousekiun.jpg', 'St層雲（霧状） or 断片層雲　悪天候ではない'],
+    ['danpenseouun.jpg', 'St断片層雲　悪天候の場合も含む'],
+    ['sousekiun-kyouzon.jpg', 'CuSc積雲＆層積雲　層積雲は積雲が広がったものではない'],
+    ['tamousekiranun.jpg', 'Cb積乱雲　カナトコ雲 or 頂部に巻雲あり同時に他の雲があっても良い']
+]
+
+//関数定義
+function make_test(){
+    //取得する配列の行インデックス
+    let i = Math.floor( Math.random() * explain_list.length);
+    
+    // 画像、説明文
+    img_name = explain_list[i][0];
+    explain = explain_list[i][1];
+    
+    this_element.insertAdjacentHTML('beforebegin', 
+    '<figure><img src="雲記号\\' + img_name + '" alt="図が取得できません" width="' + img_width + '"><figcaption></figcaption></figure>');
+}
+
+function show_answer(){
+    this_element.insertAdjacentHTML('beforebegin', '<p>' + explain + '</p>');
+}
+
+function click_button(){
+  //state_QAがAなら、問題を表示して、Qに変更
+  if (state_QA == 'A'){
+        make_test();
+        state_QA = 'Q';
+    }
+  //state_QAがQなら、答えを表示して、Aに変更
+  else if (state_QA == 'Q'){
+        show_answer();
+        state_QA = 'A';
+    }
+}
+
+// htmlへ出力（全て出力）
+this_element.insertAdjacentHTML('afterend', '<h1>雲記号一覧</h1><table><tbody id="list_table"></tbody></table>');
+let tr_text = ''; //trに書き出すhtmlを格納する変数
+for (let i = 0; i < explain_list.length; i++){
+    // 画像、説明文
+    img_name = explain_list[i][0];
+    explain = explain_list[i][1];
+    
+    // 表に書き出すhtml
+    tr_text += '<td class="img"><img src="雲記号\\' + img_name + '" alt="図が取得できません" width="' + img_width + '"></td><td class="explain">' + explain + '</td>';
+    
+    // 図2つたまったら、trに出力して、tr_textをクリア
+    if (i%2 == 1){
+        document.getElementById('list_table').insertAdjacentHTML('beforeend', tr_text);
+        tr_text = ''
+    }
+    
+}
+
+</script>
+</div>
+
+<noscript>
+<p>このサイトではJavaScriptを使用していますので、有効にしてください。</p>
+</noscript>
+
+</body>
+</html>
